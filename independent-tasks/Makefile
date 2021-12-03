@@ -11,6 +11,7 @@ SWANCC       = gcc-4.6
 SWANCXX      = g++-4.6
 SWANCFLAGS   = -Wall -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0
 SWANCXXFLAGS = -Wall -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 --std=c++0x -momit-leaf-frame-pointer -fno-omit-frame-pointer -pthread
+REDGRAPESINC=-I thirdparty/redGrapes/ -I thirdparty/redGrapes/share/thirdParty/cameron314/concurrentqueue/include/ -I thirdparty/redGrapes/share/thirdParty/akrzemi/optional/include/
 
 TBBINC=-I ${HOME}/thirdparty/tbb42_20130725oss/include
 TBBLIB=-L ${HOME}/thirdparty/tbb42_20130725oss/lib/intel64/gcc4.4 -ltbb
@@ -110,6 +111,9 @@ bin/openmp: src/openmp.cpp
 
 bin/openmp.log: src/openmp.cpp
 	$(CXX) $(CXXFLAGS) -fopenmp -DLOGGING src/openmp.cpp -o $@
+
+bin/redgrapes: src/redgrapes.cpp src/common.h
+	$(CXX) $(CXXFLAGS) -std=c++14 -DLOGGING $(REDGRAPESINC) src/redgrapes.cpp -pthread -lfmt -lboost_context -o $@
 
 runstarpu:
 	LD_LIBRARY_PATH=~/thirdparty/starpu/lib/:$(LD_LIBRARY_PATH) ./bin/starpu

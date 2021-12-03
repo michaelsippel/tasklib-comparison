@@ -11,6 +11,7 @@ SWANCC       = gcc
 SWANCXX      = g++
 SWANCFLAGS   = -Wall -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0
 SWANCXXFLAGS = -Wall -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 --std=c++0x -momit-leaf-frame-pointer -fno-omit-frame-pointer -pthread
+REDGRAPESINC=-I thirdparty/redGrapes/ -I thirdparty/redGrapes/share/thirdParty/cameron314/concurrentqueue/include/ -I thirdparty/redGrapes/share/thirdParty/akrzemi/optional/include/
 
 PKG_CONFIG_STARPU=env PKG_CONFIG_PATH=${HOME}/thirdparty/hwloc/lib/pkgconfig/:${HOME}/thirdparty/starpu/lib/pkgconfig pkg-config
 STARPU_CFLAGS = -Wall -O3 $(shell $(PKG_CONFIG_STARPU) --cflags starpu-1.1)
@@ -81,7 +82,8 @@ bin/starpu: src/starpu.c src/common.h
 bin/starpu.log: src/starpu.c src/common.h
 	$(CC) $(STARPU_CFLAGS) -DLOGGING src/starpu.c $(STARPU_LDFLAGS) -o $@
 
-
+bin/redgrapes: src/redgrapes.cpp src/common.h
+	$(CXX) $(CXXFLAGS) -std=c++14 -DLOGGING $(REDGRAPESINC) src/redgrapes.cpp -pthread -lfmt -lboost_context -o $@
 
 bin/counttasks: src/counttasks.c
 	$(CXX) src/counttasks.c -o $@
