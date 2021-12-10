@@ -1,43 +1,44 @@
 CXXFLAGS = -Wall -O3
 CFLAGS = -Wall -O3
-SMPSS=~/thirdparty/smpss/bin/smpss-cc -Wc,-Wall -O3
-OMPSS=~/thirdparty/ompss/bin/mcc --ompss -Wall -O3
-SUPERGLUEINC=-I ~/git/superglue/include/
-QUARKINC=-I ~/thirdparty/quark-0.9.0/install/include/
-QUARKLIB=-L ~/thirdparty/quark-0.9.0/install/lib/ -lquark
-SWANINC=-I ~/thirdparty/swan/scheduler -I ~/thirdparty/swan/obj/scheduler -I~/thirdparty/swan/obj/util -I ~/thirdparty/swan/obj/ 
-SWANLIB=~/thirdparty/swan/obj/scheduler/libschedulers.a
+
+THIRDPARTY=../thirdparty
+SMPSS=$(THIRDPARTY)/smpss/bin/smpss-cc -Wc,-Wall -O3
+OMPSS=$(THIRDPARTY)/ompss/bin/mcc --ompss -Wall -O3
+SUPERGLUEINC=-I $(THIRDPARTY)/superglue/include/
+QUARKINC=-I $(THIRDPARTY)/quark-0.9.0/install/include/
+QUARKLIB=-L $(THIRDPARTY)/quark-0.9.0/install/lib/ -lquark -lhwloc
+SWANINC=-I $(THIRDPARTY)/swan/scheduler -I $(THIRDPARTY)/swan/obj/scheduler -I$(THIRDPARTY)/swan/obj/util -I $(THIRDPARTY)/swan/obj/ 
+SWANLIB=$(THIRDPARTY)/swan/obj/scheduler/libschedulers.a
 SWANCC       = gcc-4.6
 SWANCXX      = g++-4.6
 SWANCFLAGS   = -Wall -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0
 SWANCXXFLAGS = -Wall -O3 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0 --std=c++0x -momit-leaf-frame-pointer -fno-omit-frame-pointer -pthread
-REDGRAPESINC=-I thirdparty/redGrapes/ -I thirdparty/redGrapes/share/thirdParty/cameron314/concurrentqueue/include/ -I thirdparty/redGrapes/share/thirdParty/akrzemi/optional/include/
+REDGRAPESINC=-I $(THIRDPARTY)/redGrapes/ -I $(THIRDPARTY)/redGrapes/share/thirdParty/cameron314/concurrentqueue/include/ -I $(THIRDPARTY)/redGrapes/share/thirdParty/akrzemi/optional/include/
 
-TBBINC=-I ${HOME}/thirdparty/tbb42_20130725oss/include
-TBBLIB=-L ${HOME}/thirdparty/tbb42_20130725oss/lib/intel64/gcc4.4 -ltbb
+TBBINC=-I $(THIRDPARTY)/tbb42_20130725oss/include
+TBBLIB=-L $(THIRDPARTY)/tbb42_20130725oss/lib/intel64/gcc4.4 -ltbb
 
-PKG_CONFIG_STARPU=env PKG_CONFIG_PATH=${HOME}/thirdparty/hwloc/lib/pkgconfig/:${HOME}/thirdparty/starpu/lib/pkgconfig pkg-config
+PKG_CONFIG_STARPU=env PKG_CONFIG_PATH=$(THIRDPARTY)/hwloc/lib/pkgconfig/:$(THIRDPARTY)/starpu/lib/pkgconfig pkg-config
 STARPU_CFLAGS = -Wall -O3 $(shell $(PKG_CONFIG_STARPU) --cflags starpu-1.1)
 STARPU_LDFLAGS = $(shell $(PKG_CONFIG_STARPU) --libs starpu-1.1)
 
-PKG_CONFIG=env PKG_CONFIG_PATH=${HOME}/thirdparty/xkaapi/lib/pkgconfig pkg-config
+PKG_CONFIG=env PKG_CONFIG_PATH=$(THIRDPARTY)/xkaapi/lib/pkgconfig pkg-config
 kaapi_CFLAGS=-Wall -O3 $(shell $(PKG_CONFIG) --cflags kaapi++)
 kaapi_LIBS=$(shell $(PKG_CONFIG) --libs kaapi++)
 
-PKG_CONFIG=env PKG_CONFIG_PATH=${HOME}/thirdparty/xkaapi/lib/pkgconfig pkg-config
+PKG_CONFIG=env PKG_CONFIG_PATH=$(THIRDPARTY)/xkaapi/lib/pkgconfig pkg-config
 kaapic_CFLAGS=-Wall -O3 $(shell $(PKG_CONFIG) --cflags kaapic)
 kaapic_LIBS=$(shell $(PKG_CONFIG) --libs kaapic)
 
 CILKPLUS=\
-PATH=${HOME}/thirdparty/cilkplus-4_8-install/bin:${PATH} \
-CPATH=${HOME}/thirdparty/cilkplus-4_8-install/include:/usr/include:/usr/include/x86_64-linux-gnu:${CPATH} \
-LIBRARY_PATH=${HOME}/thirdparty/cilkplus-4_8-install/lib:${HOME}/thirdparty/cilkplus-4_8-install/lib64:/usr/lib/x86_64-linux-gnu \
-LD_LIBRARY_PATH=${HOME}/thirdparty/cilkplus-4_8-install/lib:${HOME}/thirdparty/cilkplus-4_8-install/lib64:/usr/lib/x86_64-linux-gnu \
+PATH=$(THIRDPARTY)/cilkplus-4_8-install/bin:${PATH} \
+CPATH=$(THIRDPARTY)/cilkplus-4_8-install/include:/usr/include:/usr/include/x86_64-linux-gnu:${CPATH} \
+LIBRARY_PATH=$(THIRDPARTY)/cilkplus-4_8-install/lib:$(THIRDPARTY)/cilkplus-4_8-install/lib64:/usr/lib/x86_64-linux-gnu \
+LD_LIBRARY_PATH=$(THIRDPARTY)/cilkplus-4_8-install/lib:$(THIRDPARTY)/cilkplus-4_8-install/lib64:/usr/lib/x86_64-linux-gnu \
 	x86_64-unknown-linux-gnu-g++ -fcilkplus -lcilkrts -Wall -O3 -L/usr/lib/x86_64-linux-gnu
-CILKINC=
-#-I ${HOME}/thirdparty/cilkplus-4_8-install/include
+CILKINC=-I $(THIRDPARTY)/cilkplus-4_8-install/include
 
-ALL=smpss ompss superglue quark swan xkaapi kaapic tbb cilkplus openmp starpu
+ALL=smpss ompss superglue quark swan xkaapi kaapic tbb cilkplus openmp starpu redgrapes
 ALL:=$(addprefix bin/,$(ALL))
 ALL:=$(ALL) $(addsuffix .log,$(ALL))
 
@@ -116,7 +117,7 @@ bin/redgrapes: src/redgrapes.cpp src/common.h
 	$(CXX) $(CXXFLAGS) -std=c++14 -DLOGGING $(REDGRAPESINC) src/redgrapes.cpp -pthread -lfmt -lboost_context -o $@
 
 runstarpu:
-	LD_LIBRARY_PATH=~/thirdparty/starpu/lib/:$(LD_LIBRARY_PATH) ./bin/starpu
+	LD_LIBRARY_PATH=$(THIRDPARTY)/starpu/lib/:$(LD_LIBRARY_PATH) ./bin/starpu
 
 clean:
 	rm -f $(ALL)
