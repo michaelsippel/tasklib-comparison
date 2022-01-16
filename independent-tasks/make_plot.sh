@@ -1,6 +1,6 @@
 #!/bin/sh
 
-n_tasks=100
+n_tasks=1500
 n_threads=4
 
 array_avg() {

@@ -85,6 +85,9 @@ bin/starpu.log: src/starpu.c src/common.h
 	$(CC) $(STARPU_CFLAGS) -DLOGGING src/starpu.c $(STARPU_LDFLAGS) -o $@
 
 bin/redgrapes: src/redgrapes.cpp src/common.h
+	$(CXX) $(CXXFLAGS) -std=c++14 $(REDGRAPESINC) src/redgrapes.cpp -pthread -lfmt -lboost_context -o $@
+
+bin/redgrapes.log: src/redgrapes.cpp src/common.h
 	$(CXX) $(CXXFLAGS) -std=c++14 -DLOGGING $(REDGRAPESINC) src/redgrapes.cpp -pthread -lfmt -lboost_context -o $@
 
 bin/counttasks: src/counttasks.c
