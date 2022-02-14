@@ -114,6 +114,9 @@ bin/openmp.log: src/openmp.cpp
 	$(CXX) $(CXXFLAGS) -fopenmp -DLOGGING src/openmp.cpp -o $@
 
 bin/redgrapes: src/redgrapes.cpp src/common.h
+	$(CXX) $(CXXFLAGS) -std=c++14 $(REDGRAPESINC) src/redgrapes.cpp -pthread -lfmt -lboost_context -o $@
+
+bin/redgrapes.log: src/redgrapes.cpp src/common.h
 	$(CXX) $(CXXFLAGS) -std=c++14 -DLOGGING $(REDGRAPESINC) src/redgrapes.cpp -pthread -lfmt -lboost_context -o $@
 
 runstarpu:
