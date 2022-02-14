@@ -10,7 +10,7 @@ LOG_TimeUnit LOG_start, LOG_mid, LOG_stop;
 
 void test(int n) {
     int i;
-    Quark *quark = QUARK_New(0);
+    Quark *quark = QUARK_New(4);
 
     LOG_start = LOG_getTimeStart();
 

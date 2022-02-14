@@ -10,7 +10,7 @@ struct mytask : public Task<Options, 0> {
     void run() { LOG_TIMER("task"); }
 };
 
-SuperGlue<Options> tm;
+SuperGlue<Options> tm(4);
 
 LOG_TimeUnit LOG_start, LOG_mid, LOG_stop;
 

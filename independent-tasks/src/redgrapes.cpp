@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 
     TIMING_init();
 
-    rg = new redGrapes::RedGrapes<>();
+    rg = new redGrapes::RedGrapes<>(4);
 
     for (i = 0; i < NUM_ITERATIONS; ++i) {
         test(n);

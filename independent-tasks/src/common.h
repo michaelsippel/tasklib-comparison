@@ -150,5 +150,5 @@ void TIMING_end(int n) {
 #ifdef LOGGING
 #define NUM_ITERATIONS 1
 #else
-#define NUM_ITERATIONS 5
+#define NUM_ITERATIONS 25
 #endif

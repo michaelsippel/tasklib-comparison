@@ -147,5 +147,5 @@ void TIMING_end(int n) {
     free(TIMING_total);
 }
 
-#define NUM_ITERATIONS 20
+#define NUM_ITERATIONS 25
 

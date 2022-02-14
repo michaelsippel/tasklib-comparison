@@ -41,7 +41,7 @@ struct syrk : public Task<Options, 2> {
     void run() { LOG_TIMER("syrk"); }
 };
 
-SuperGlue<Options> tm;
+SuperGlue<Options> tm(4);
 double *A;
 Handle<Options> *h;
 
