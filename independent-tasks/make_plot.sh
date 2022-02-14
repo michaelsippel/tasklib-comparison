@@ -4,15 +4,15 @@ n_tasks=1500
 n_threads=4
 
 array_avg() {
-    awk '{sum = 0; for(i=1;i<=NF;i++) { sum += $i } } END { print sum/NF }'
+    awk '{sum = 0; for(i=1;i<=NF;i++) { sum += $i } } END { printf "%d", sum/NF }'
 }
 
 array_min() {
-    awk '{min = $1; for(i=1;i<=NF;i++) { if($i < min) { min = $i } } } END { print min }'
+    awk '{min = $1; for(i=1;i<=NF;i++) { if($i < min) { min = $i } } } END { printf "%d", min }'
 }
 
 array_max() {
-    awk '{max = $1; for(i=1;i<=NF;i++) { if($i > max) { max = $i } } } END { print max }'
+    awk '{max = $1; for(i=1;i<=NF;i++) { if($i > max) { max = $i } } } END { printf "%d", max }'
 }
 
 gen_data() {
